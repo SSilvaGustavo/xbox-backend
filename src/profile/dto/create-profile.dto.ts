@@ -13,5 +13,8 @@ export class CreateProfileDto extends Profile {
 
   @IsNotEmpty()
   @IsInt()
-  userId: number;
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput;
+
+  @IsOptional()
+  games?: Prisma.GamesCreateNestedManyWithoutProfileInput;
 }

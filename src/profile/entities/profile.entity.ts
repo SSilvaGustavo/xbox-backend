@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 
-export class Profile implements Prisma.ProfileUncheckedCreateInput{
-    idProfile?: number;
+export class Profile implements Prisma.ProfileCreateInput{
     nickname: string;
     image: string;
-    userId: number;
+    user: Prisma.UserCreateNestedOneWithoutProfilesInput;
+    games?: Prisma.GamesCreateNestedManyWithoutProfileInput;
 }
