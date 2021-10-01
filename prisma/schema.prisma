@@ -30,7 +30,7 @@ model Profile {
 }
 
 model Games {
-  idGame       Int    @id @default(autoincrement())
+  idGame       Int       @id @default(autoincrement())
   title        String
   cover        String
   description  String
@@ -38,12 +38,12 @@ model Games {
   imdb         Int
   linkyt       String
   linkgameplay String
-  profile Profile[]
-  genre Genre[]
+  profile      Profile[]
+  genre        Genre[]
 }
 
 model Genre {
-  idGenre Int    @id @default(autoincrement())
+  idGenre Int     @id @default(autoincrement())
   name    String
-  games Games[]
+  games   Games[]
 }
