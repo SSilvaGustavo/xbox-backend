@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, NotFoundException } from '@nestjs/common';
 import { GenreService } from './genre.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
@@ -6,6 +6,10 @@ import { UpdateGenreDto } from './dto/update-genre.dto';
 @Controller('genre')
 export class GenreController {
   constructor(private readonly genreService: GenreService) {}
+  
+  private readonly notFound = (id) => {
+    throw new HttpException(`The user with #${id} was not found`, 404);
+  }
 
   @Post()
   create(@Body() createGenreDto: CreateGenreDto) {
@@ -14,12 +18,14 @@ export class GenreController {
 
   @Get()
   findAll() {
-    return this.genreService.findAll();
+    return this.genreService.findAll().catch((err) => {
+      throw new NotFoundException(`Page was not found`)
+    });
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.genreService.findOne(+id);
+    return this.genreService.findOne(+id).catch((err) => this.notFound(id));
   }
 
   @Patch(':id')
@@ -29,6 +35,6 @@ export class GenreController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.genreService.remove(+id);
+    return this.genreService.remove(+id).catch((err) => this.notFound(id));
   }
 }

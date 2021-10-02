@@ -32,6 +32,7 @@ export class ProfileService {
     return this.prisma.profile.findUnique({
       where: { idProfile },
       include: this._include,
+      rejectOnNotFound: true
     });
   }
 

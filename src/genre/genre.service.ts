@@ -21,7 +21,8 @@ export class GenreService {
 
   findOne(idGenre: number) {
     return this.prisma.genre.findUnique({
-      where: {idGenre}
+      where: {idGenre},
+      rejectOnNotFound: true
     });
   }
 

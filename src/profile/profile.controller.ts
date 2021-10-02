@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, NotFoundException } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -7,6 +7,10 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
+  private readonly notFound = (id) => {
+    throw new HttpException(`The user with #${id} was not found`, 404);
+  }
+
   @Post()
   create(@Body() createProfileDto: CreateProfileDto) {
     return this.profileService.create(createProfileDto);
@@ -14,14 +18,14 @@ export class ProfileController {
 
   @Get()
   findAll() {
-    return this.profileService.findAll();
+    return this.profileService.findAll().catch((err) => {
+      throw new NotFoundException(`Page was not found`)
+    });
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.profileService.findOne(+id).catch((err) => {
-      throw new HttpException("ID não encontrado", 404)
-    });
+    return this.profileService.findOne(+id).catch((err) => this.notFound(id));
   }
 
   @Patch(':id')
@@ -31,6 +35,6 @@ export class ProfileController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.profileService.remove(+id);
+    return this.profileService.remove(+id).catch((err) => this.notFound(id));
   }
 }

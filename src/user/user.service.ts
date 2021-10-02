@@ -31,7 +31,8 @@ export class UserService {
   findOne(idUser: number) {
     return this.prisma.user.findUnique({
       where: { idUser },
-      include: this._include
+      include: this._include,
+      rejectOnNotFound: true
     });
   }
 

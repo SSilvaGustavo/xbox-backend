@@ -3,23 +3,23 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { User } from '../entities/user.entity';
 
 export class CreateUserDto extends User {
-  @IsString()
-  @IsNotEmpty()
+  @IsString({message: "The name must be a String"})
+  @IsNotEmpty({message: "The name cannot be empty"})
   name: string;
 
-  @IsString()
+  @IsString({message: "The surname must be a String"})
   @IsOptional()
   surname: string;
 
   @IsEmail()
-  @IsString()
-  @IsNotEmpty()
+  @IsString({message: "The email must be a String"})
+  @IsNotEmpty({message: "The email cannot be empty"})
   email: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({message: "The password cannot be empty"})
   password: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({message: "The cpf cannot be empty"})
   cpf: string;
 
   @IsOptional()

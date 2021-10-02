@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, NotFoundException, HttpCode, HttpStatus} from '@nestjs/common';
 import { GamesService } from './games.service';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
@@ -11,7 +11,6 @@ export class GamesController {
     throw new HttpException(`The user with #${id} was not found`, 404);
   }
   
-
   @Post()
   create(@Body() createGameDto: CreateGameDto) {
     return this.gamesService.create(createGameDto);
@@ -19,7 +18,9 @@ export class GamesController {
 
   @Get()
   findAll() {
-    return this.gamesService.findAll();
+    return this.gamesService.findAll().catch((err) => {
+      throw new NotFoundException(`Page was not found`)
+    });
   }
 
   @Get(':id')
@@ -34,6 +35,6 @@ export class GamesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.gamesService.remove(+id);
+    return this.gamesService.remove(+id).catch((err) => this.notFound(id));
   }
 }
