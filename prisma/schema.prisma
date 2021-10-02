@@ -22,8 +22,8 @@ model User {
 
 model Profile {
   idProfile Int     @id @default(autoincrement())
-  nickname  String
-  image     String
+  nickname  String  @unique
+  image     String?
   user      User    @relation(fields: [userId], references: [idUser], onDelete: Cascade, onUpdate: Cascade)
   userId    Int
   games     Games[]
@@ -31,12 +31,12 @@ model Profile {
 
 model Games {
   idGame       Int       @id @default(autoincrement())
-  title        String
+  title        String    @unique
   cover        String
   description  String
   year         Int
-  imdb         Int
-  linkyt       String
+  imdb         Float
+  linkyt       String?
   linkgameplay String
   profile      Profile[]
   genre        Genre[]
@@ -44,6 +44,6 @@ model Games {
 
 model Genre {
   idGenre Int     @id @default(autoincrement())
-  name    String
+  name    String  @unique
   games   Games[]
 }
