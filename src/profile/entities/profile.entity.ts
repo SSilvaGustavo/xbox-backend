@@ -1,8 +1,9 @@
-import { Prisma } from '@prisma/client';
+import { Game } from "src/games/entities/game.entity";
 
-export class Profile implements Prisma.ProfileCreateInput{
+export class Profile{
+    idProfile?: number;
     nickname: string;
-    image: string;
-    user: Prisma.UserCreateNestedOneWithoutProfilesInput;
-    games?: Prisma.GamesCreateNestedManyWithoutProfileInput;
+    image?: string;
+    userId: number;
+    games?: Game[]
 }

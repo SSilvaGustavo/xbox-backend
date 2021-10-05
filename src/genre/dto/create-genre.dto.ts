@@ -1,5 +1,4 @@
-import { Prisma } from ".prisma/client";
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 import { Genre } from "../entities/genre.entity";
 
 export class CreateGenreDto extends Genre {
@@ -7,6 +6,4 @@ export class CreateGenreDto extends Genre {
     @IsNotEmpty({message: "The name cannot be empty"})
     name: string;
 
-    @IsOptional()
-    genre: Prisma.GamesCreateNestedManyWithoutGenreInput
 }

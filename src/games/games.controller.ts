@@ -12,6 +12,7 @@ export class GamesController {
   }
   
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() createGameDto: CreateGameDto) {
     return this.gamesService.create(createGameDto);
   }

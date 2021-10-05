@@ -1,5 +1,6 @@
-import { Prisma } from '@prisma/client';
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsEmail, IsNotEmpty, IsOptional, IsString, Validate, ValidateNested } from 'class-validator';
+import { CreateProfileDto } from 'src/profile/dto/create-profile.dto';
 import { User } from '../entities/user.entity';
 
 export class CreateUserDto extends User {
@@ -22,6 +23,9 @@ export class CreateUserDto extends User {
   @IsNotEmpty({message: "The cpf cannot be empty"})
   cpf: string;
 
+  @ValidateNested({each:true})
+  @Type(() => CreateProfileDto)
+  @IsArray()
   @IsOptional()
-  profiles?: Prisma.ProfileUncheckedCreateNestedManyWithoutUserInput;
+  profiles?: CreateProfileDto[];
 }

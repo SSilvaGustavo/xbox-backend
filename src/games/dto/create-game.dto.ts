@@ -1,5 +1,6 @@
-import { Prisma } from "@prisma/client";
-import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { CreateGenreDto } from "src/genre/dto/create-genre.dto";
 import { Game } from "../entities/game.entity";
 
 export class CreateGameDto extends Game{
@@ -31,11 +32,10 @@ export class CreateGameDto extends Game{
     @IsNotEmpty({message: "The Gameplay link cannot be empty"})
     linkgameplay: string;
 
-    @IsString({message: "The profile must be a String"})
-    @IsOptional()
-    profile?: Prisma.ProfileCreateNestedManyWithoutGamesInput;
 
-    @IsString({message: "The genre must be a String"})
     @IsOptional()
-    genre?: Prisma.GenreCreateNestedManyWithoutGamesInput;
+    @ValidateNested({each: true})
+    @IsArray()
+    @Type(() => CreateGenreDto)
+    genre?: CreateGenreDto[];
 }
