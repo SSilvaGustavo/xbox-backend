@@ -1,9 +1,9 @@
 import { Type } from "class-transformer";
-import { IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { CreateGenreDto } from "src/genre/dto/create-genre.dto";
 import { Game } from "../entities/game.entity";
 
-export class CreateGameDto extends Game{
+export class CreateGameDto{
     @IsString({message: "The title must be a String"})
     @IsNotEmpty({message: "The title cannot be empty"})
     title: string;
@@ -33,9 +33,14 @@ export class CreateGameDto extends Game{
     linkgameplay: string;
 
 
-    @IsOptional()
-    @ValidateNested({each: true})
+    // @IsOptional()
+    // @ValidateNested({each: true})
+    // @IsArray()
+    // @Type(() => CreateGenreDto)
+    // genre?: CreateGenreDto[];
+    
+    @IsInt({ each: true })
     @IsArray()
-    @Type(() => CreateGenreDto)
-    genre?: CreateGenreDto[];
+    @ArrayNotEmpty()
+    genreIds: number[];
 }

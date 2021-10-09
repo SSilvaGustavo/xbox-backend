@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
@@ -7,7 +8,12 @@ import { UpdateGenreDto } from './dto/update-genre.dto';
 export class GenreService {
   constructor(private readonly prisma: PrismaService){}
 
-  create(data: CreateGenreDto) {
+  create(dto: CreateGenreDto) {
+
+    const data: Prisma.GenreCreateInput = {
+      ...dto,
+    }
+
     return this.prisma.genre.create({
       data,
     });

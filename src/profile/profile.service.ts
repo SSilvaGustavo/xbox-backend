@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -10,13 +11,27 @@ export class ProfileService {
   private readonly _include = {
     games: {
       select: {
-        idGame: true,
         title: true,
+        cover: true,
+        description: true,
+        year: true,
+        imdb: true,
+        linkyt: true,
+        linkgameplay: true
       },
     },
   };
 
-  create(data: CreateProfileDto) {
+  create(dto: CreateProfileDto) {
+    const data : Prisma.ProfileCreateInput = {
+      ...dto,
+      user :{
+        connect: {
+          idUser: dto.idUser
+        }
+      }
+    }
+
     return this.prisma.profile.create({
       data,
     });
@@ -36,10 +51,10 @@ export class ProfileService {
     });
   }
 
-  update(idProfile: number, data: UpdateProfileDto) {
+  update(idProfile: number, dto: UpdateProfileDto) {
     return this.prisma.profile.update({
       where: { idProfile },
-      data,
+      dto,
     });
   }
 

@@ -24,17 +24,17 @@ export class ProfileController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.profileService.findOne(+id).catch((err) => this.notFound(id));
+  findOne(@Param('id') id: number) {
+    return this.profileService.findOne(id).catch((err) => this.notFound(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profileService.update(+id, updateProfileDto);
+  update(@Param('id') id: number, @Body() updateProfileDto: UpdateProfileDto) {
+    return this.profileService.update(id, updateProfileDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.profileService.remove(+id).catch((err) => this.notFound(id));
+  remove(@Param('id') id: number) {
+    return this.profileService.remove(id).catch((err) => this.notFound(id));
   }
 }

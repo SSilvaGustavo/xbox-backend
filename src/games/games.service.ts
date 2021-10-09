@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { HttpCode, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGameDto } from './dto/create-game.dto';
@@ -22,7 +23,19 @@ export class GamesService {
     },
   }
 
-  create(data: CreateGameDto) {
+  create(dto: CreateGameDto) {
+
+    const genreId = dto.genreIds;
+
+    delete dto.genreIds;
+
+    const data: Prisma.GamesCreateInput = {
+        ...dto,
+        genre:{
+          connect: genreId.map((genreId) => ({idGenre: genreId}))
+        }
+    }
+
     return this.prisma.games.create({
       data,
     })
