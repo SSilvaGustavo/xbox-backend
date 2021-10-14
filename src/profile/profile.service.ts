@@ -12,12 +12,12 @@ export class ProfileService {
     games: {
       select: {
         title: true,
-        cover: true,
-        description: true,
-        year: true,
-        imdb: true,
-        linkyt: true,
-        linkgameplay: true
+        cover: false,
+        description: false,
+        year: false,
+        imdb: false,
+        linkyt: false,
+        linkgameplay: false
       },
     },
   };
@@ -27,7 +27,7 @@ export class ProfileService {
       ...dto,
       user :{
         connect: {
-          idUser: dto.idUser
+          idUser: dto.user
         }
       }
     }
@@ -52,9 +52,27 @@ export class ProfileService {
   }
 
   update(idProfile: number, dto: UpdateProfileDto) {
+    const gamesIds = dto.gamesIds
+
+    delete dto.gamesIds;
+
+
+    const data: Prisma.ProfileUpdateInput = {
+      ...dto,
+      user:{
+        connect: {
+          idUser: dto.user
+        }
+      },
+      games: {
+        connect: gamesIds?.map((gameId) => ({idGame: gameId})) || [],
+        },
+      }
+      
     return this.prisma.profile.update({
       where: { idProfile },
-      dto,
+      data,
+      include: this._include
     });
   }
 
