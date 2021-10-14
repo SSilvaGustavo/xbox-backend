@@ -1,9 +1,9 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsEmail, IsNotEmpty, IsOptional, IsString, Validate, ValidateNested } from 'class-validator';
+import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, Length, Matches, Validate, ValidateNested } from 'class-validator';
 import { CreateProfileDto } from 'src/profile/dto/create-profile.dto';
 import { User } from '../entities/user.entity';
 
-export class CreateUserDto extends User {
+export class CreateUserDto{
   @IsString({message: "The name must be a String"})
   @IsNotEmpty({message: "The name cannot be empty"})
   name: string;
@@ -17,11 +17,19 @@ export class CreateUserDto extends User {
   @IsNotEmpty({message: "The email cannot be empty"})
   email: string;
 
-  @IsNotEmpty({message: "The password cannot be empty"})
+  @IsString()
+  @Length(4, 20)
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'password too weak',
+  })
   password: string;
 
   @IsNotEmpty({message: "The cpf cannot be empty"})
   cpf: string;
+
+  @IsOptional()
+  @IsBoolean()
+  admin?: boolean;
 
   @ValidateNested({each:true})
   @Type(() => CreateProfileDto)
