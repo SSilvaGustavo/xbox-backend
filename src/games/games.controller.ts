@@ -34,6 +34,11 @@ export class GamesController {
     return this.gamesService.update(+id, updateGameDto);
   }
 
+  @Patch('remove/:id')
+  updateDel(@Param('id') id: string, @Body() updateGameDto: UpdateGameDto) {
+    return this.gamesService.updateDel(+id, updateGameDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.gamesService.remove(+id).catch((err) => this.notFound(id));
