@@ -8,4 +8,5 @@ export class UpdateProfileDto extends CreateProfileDto{
     @IsInt({ each: true })
     @IsArray()
     gamesIds?: number[]
+
 }

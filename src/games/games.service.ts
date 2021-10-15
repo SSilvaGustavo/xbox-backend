@@ -55,10 +55,43 @@ export class GamesService {
     })
   }
 
-  update(idGame: number, data: UpdateGameDto) {
+  update(idGame: number, dto: UpdateGameDto) {
+    const genresIds = dto.genreIds
+
+    delete dto.genreIds
+
+    const data: Prisma.GamesUpdateInput = {
+      ...dto,
+      genre: {
+        connect: genresIds?.map((genreId) => ({idGenre: genreId})) || [],
+      }
+      
+    }
+
     return this.prisma.games.update({
       where: {idGame},
       data,
+      include: this._include
+    })
+  }
+
+  updateDel(idGame: number, dto: UpdateGameDto) {
+    const genresIds = dto.genreIds
+
+    delete dto.genreIds
+
+    const data: Prisma.GamesUpdateInput = {
+      ...dto,
+      genre: {
+        disconnect: genresIds?.map((genreId) => ({idGenre: genreId})) || [],
+      }
+      
+    }
+
+    return this.prisma.games.update({
+      where: {idGame},
+      data,
+      include: this._include
     })
   }
 
