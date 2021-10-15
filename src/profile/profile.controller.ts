@@ -33,6 +33,11 @@ export class ProfileController {
     return this.profileService.update(id, updateProfileDto);
   }
 
+  @Patch('/remove/:id')
+  updateDel(@Param('id') id: number, @Body() updateProfileDto: UpdateProfileDto) {
+    return this.profileService.updateDel(id, updateProfileDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.profileService.remove(id).catch((err) => this.notFound(id));

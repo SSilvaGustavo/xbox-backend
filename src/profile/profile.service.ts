@@ -54,8 +54,9 @@ export class ProfileService {
   update(idProfile: number, dto: UpdateProfileDto) {
     const gamesIds = dto.gamesIds
 
+    
     delete dto.gamesIds;
-
+  
 
     const data: Prisma.ProfileUpdateInput = {
       ...dto,
@@ -69,6 +70,34 @@ export class ProfileService {
         },
       }
       
+    console.log({games: data.games.connect})
+    return this.prisma.profile.update({
+      where: { idProfile },
+      data,
+      include: this._include
+    });
+  }
+
+  updateDel(idProfile: number, dto: UpdateProfileDto) {
+    const gamesIds = dto.gamesIds
+
+    
+    delete dto.gamesIds;
+  
+
+    const data: Prisma.ProfileUpdateInput = {
+      ...dto,
+      user:{
+        connect: {
+          idUser: dto.user
+        }
+      },
+      games: {
+        disconnect: gamesIds?.map((gameId) => ({idGame: gameId})) || [],
+        },
+      }
+      
+    console.log({games: data.games.connect})
     return this.prisma.profile.update({
       where: { idProfile },
       data,
