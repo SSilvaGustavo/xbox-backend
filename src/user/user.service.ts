@@ -20,7 +20,7 @@ export class UserService {
   create(dto: CreateUserDto) {
     const data : Prisma.UserCreateInput = {
       ...dto,
-      profiles: { create: dto.profiles }
+      profiles: dto.profiles ? { create: dto.profiles } : {}
     };
     return this.prisma.user.create({
       data,
