@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, Length, Matches, Validate, ValidateNested } from 'class-validator';
+import { Cpf } from 'src/decorators/cpf.decorator';
 import { CreateProfileDto } from 'src/profile/dto/create-profile.dto';
 import { User } from '../entities/user.entity';
 
@@ -24,7 +25,7 @@ export class CreateUserDto{
   })
   password: string;
 
-  @IsNotEmpty({message: "The cpf cannot be empty"})
+  @Cpf()
   cpf: string;
 
   @IsOptional()
