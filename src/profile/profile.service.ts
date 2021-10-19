@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from 'src/user/entities/user.entity';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
@@ -22,12 +23,12 @@ export class ProfileService {
     },
   };
 
-  create(dto: CreateProfileDto) {
+  create(dto: CreateProfileDto, currentUser: User) {
     const data : Prisma.ProfileCreateInput = {
       ...dto,
       user :{
         connect: {
-          idUser: dto.user
+          idUser: currentUser.idUser
         }
       }
     }
@@ -54,50 +55,22 @@ export class ProfileService {
   update(idProfile: number, dto: UpdateProfileDto) {
     const gamesIds = dto.gamesIds
 
+    const discGamesIds = dto.disconnectGamesIds
+
     
     delete dto.gamesIds;
+
+    delete dto.disconnectGamesIds
   
 
     const data: Prisma.ProfileUpdateInput = {
       ...dto,
-      user:{
-        connect: {
-          idUser: dto.user
-        }
-      },
       games: {
         connect: gamesIds?.map((gameId) => ({idGame: gameId})) || [],
+        disconnect: discGamesIds?.map((gameId) => ({idGame: gameId})) || []
         },
       }
-      
-    console.log({games: data.games.connect})
-    return this.prisma.profile.update({
-      where: { idProfile },
-      data,
-      include: this._include
-    });
-  }
 
-  updateDel(idProfile: number, dto: UpdateProfileDto) {
-    const gamesIds = dto.gamesIds
-
-    
-    delete dto.gamesIds;
-  
-
-    const data: Prisma.ProfileUpdateInput = {
-      ...dto,
-      user:{
-        connect: {
-          idUser: dto.user
-        }
-      },
-      games: {
-        disconnect: gamesIds?.map((gameId) => ({idGame: gameId})) || [],
-        },
-      }
-      
-    console.log({games: data.games.connect})
     return this.prisma.profile.update({
       where: { idProfile },
       data,

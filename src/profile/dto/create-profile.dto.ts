@@ -12,8 +12,8 @@ export class CreateProfileDto{
   @IsNotEmpty({message: "The image cannot be empty"})
   image: string;
   
-  @IsInt()
-  user: number;
+  // @IsInt()
+  // user: number;
   
   // @IsOptional()
   // @IsArray()

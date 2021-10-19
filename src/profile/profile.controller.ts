@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, NotFo
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { User } from 'src/user/entities/user.entity';
 
 @Controller('profile')
 export class ProfileController {
@@ -12,8 +14,8 @@ export class ProfileController {
   }
 
   @Post()
-  create(@Body() createProfileDto: CreateProfileDto) {
-    return this.profileService.create(createProfileDto);
+  create(@CurrentUser()currentUser: User, @Body() createProfileDto: CreateProfileDto) {
+    return this.profileService.create(createProfileDto, currentUser)
   }
 
   @Get()
@@ -31,11 +33,6 @@ export class ProfileController {
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateProfileDto: UpdateProfileDto) {
     return this.profileService.update(id, updateProfileDto);
-  }
-
-  @Patch('/remove/:id')
-  updateDel(@Param('id') id: number, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profileService.updateDel(id, updateProfileDto);
   }
 
   @Delete(':id')
