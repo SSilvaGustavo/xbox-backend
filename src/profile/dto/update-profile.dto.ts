@@ -7,6 +7,12 @@ import { CreateProfileDto } from './create-profile.dto';
 export class UpdateProfileDto extends CreateProfileDto{
     @IsInt({ each: true })
     @IsArray()
+    @IsOptional()
     gamesIds?: number[]
+
+    @IsInt({ each: true })
+    @IsArray()
+    @IsOptional()
+    disconnectGamesIds?: number[]
 
 }
