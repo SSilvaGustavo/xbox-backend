@@ -4,6 +4,6 @@ export class Profile{
     idProfile?: number;
     nickname: string;
     image?: string;
-    idUser: number;
+    idUser?: number;
     games?: Game[]
 }
