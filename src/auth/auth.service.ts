@@ -23,6 +23,7 @@ export class AuthService {
 
         return {
             accessToken: this.jwtService.sign(payload),
+            UserID: user.idUser
         };
     }
     
