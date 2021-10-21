@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { ArrayMaxSize, ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, ValidateNested } from "class-validator";
 import { CreateGenreDto } from "src/genre/dto/create-genre.dto";
 import { Game } from "../entities/game.entity";
 
@@ -42,5 +42,6 @@ export class CreateGameDto{
     @IsInt({ each: true })
     @IsArray()
     @ArrayNotEmpty()
+    @ArrayMaxSize(2)
     genreIds: number[];
 }
