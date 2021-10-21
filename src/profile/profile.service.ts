@@ -12,8 +12,9 @@ export class ProfileService {
   private readonly _include = {
     games: {
       select: {
+        idGame: true,
         title: true,
-        cover: false,
+        cover: true,
         description: false,
         year: false,
         imdb: false,
@@ -38,8 +39,9 @@ export class ProfileService {
     });
   }
 
-  findAll() {
+  findAll(userId: number) {
     return this.prisma.profile.findMany({
+      where: { userId },
       include: this._include,
     });
   }

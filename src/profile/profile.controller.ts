@@ -4,6 +4,7 @@ import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { User } from 'src/user/entities/user.entity';
+import { Public } from 'src/auth/public.decorator';
 
 @Controller('profile')
 export class ProfileController {
@@ -18,9 +19,10 @@ export class ProfileController {
     return this.profileService.create(createProfileDto, currentUser)
   }
 
-  @Get()
-  findAll() {
-    return this.profileService.findAll().catch((err) => {
+  @Public()
+  @Get('profilebyuser/:id')
+  findAll(@Param('id') id: number) {
+    return this.profileService.findAll(id).catch((err) => {
       throw new NotFoundException(`Page was not found`)
     });
   }
